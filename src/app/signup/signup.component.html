@@ -1,0 +1,102 @@
+<div class="min-h-screen bg-blue-400 flex items-center justify-center p-4">
+  <div class="w-full max-w-xs p-4 bg-gray-100 rounded-lg shadow-2xl">
+    <div class="flex items-start w-full gap-2">
+      <div class="flex flex-col w-full">
+        <input
+          type="text"
+          pInputText
+          placeholder="First Name"
+          [(ngModel)]="formData.firstName"
+          name="firstName"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 "/>
+
+        <input
+          type="text"
+          pInputText
+          placeholder="Last Name"
+          [(ngModel)]="formData.lastName"
+          name="lastName"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 mt-3"/>
+
+        <input
+          type="text"
+          pInputText
+          placeholder="Username"
+          [(ngModel)]="formData.username"
+          name="username"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 mt-3"/>
+
+        <div class="mt-3">
+          <p-select
+            [options]="genderOptions"
+            [(ngModel)]="formData.gender"
+            name="gender"
+            optionLabel="label"
+            placeholder="Gender"
+            styleClass="w-full placeholder:!text-gray-500 border! border-gray-400! !rounded-md">
+          </p-select>
+        </div>
+
+        <div class="mt-3">
+          <p-calendar
+            [(ngModel)]="formData.dateOfBirth"
+            name="dateOfBirth"
+            placeholder="Date of Birth"
+            [showIcon]="true"
+            dateFormat="dd.mm.yy"
+            inputStyleClass="w-full !border !border-gray-400 !rounded-md focus:!border-blue-500 focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2"
+          ></p-calendar>
+        </div>
+
+        <input
+          type="tel"
+          pInputText
+          placeholder="Phone Number"
+          [(ngModel)]="formData.phoneNumber"
+          name="phoneNumber"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 mt-3"/>
+
+        <input
+          type="email"
+          pInputText
+          placeholder="Email address"
+          [(ngModel)]="formData.email"
+          name="email"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 mt-3"/>
+
+        <input
+          type="password"
+          pInputText
+          placeholder="Password"
+          [(ngModel)]="formData.password"
+          name="password"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 mt-3"/>
+
+        <p-button
+          label="Already have an account?"
+          (click)="onLogin()"
+          styleClass="p-button-link !text-blue-500 !text-xs !font-semibold
+          hover:!text-blue-600">
+        </p-button>
+
+        <div *ngIf="errorMessage" class="mt-2 text-red-600 font-semibold text-sm">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 flex justify-end">
+      <p-button
+        label="Create"
+        (click)="onCreate()"
+        styleClass=" !bg-green-600 hover:!bg-green-700 !px-2 !py-0.5 !text-white">
+      </p-button>
+    </div>
+  </div>
+</div>

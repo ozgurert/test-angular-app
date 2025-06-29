@@ -1,0 +1,56 @@
+<div class="min-h-screen bg-blue-400 flex items-center justify-center p-4">
+
+  <div [formGroup]="loginForm" class="w-full max-w-xs p-4 bg-gray-100 rounded-lg shadow-2xl">
+
+    <div class="flex flex-col sm:flex-row items-center sm:items-start w-full gap-4">
+
+      <span class="p-6 bg-pink-300 shadow-xl rounded-md">
+        <i class="pi pi-user text-red-400" ></i>
+      </span>
+
+      <div class="flex flex-col">
+        <input
+          type="text"
+          pInputText
+          placeholder="Username or email"
+          formControlName="username"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 !ml-2"/>
+
+        <input
+          type="password"
+          pInputText
+          placeholder="Password"
+          formControlName="password"
+          class="flex-1 !border !border-gray-400 !rounded-md focus:!border-blue-500
+        focus:!ring-gray-200 focus:!ring placeholder:!text-gray-500 !p-1 !pl-2 !ml-2 !mt-2"/>
+
+        <div *ngIf="errorMessage" class="text-xs text-red-600 mt-2 ml-3 font-semibold">
+          {{ errorMessage }}
+        </div>
+
+        <p-button
+          label="Forgot password?"
+          (click)="onForgotPassword()"
+          styleClass="p-button-link !text-blue-500 !text-xs !font-semibold underline
+          hover:!text-blue-600">
+        </p-button>
+
+        <p-button
+          label="Create an account"
+          (click)="onCreateAccount()"
+          styleClass="p-button-link !text-blue-500 !text-xs !font-semibold
+          hover:!text-blue-600">
+        </p-button>
+      </div>
+    </div>
+
+    <div class="mt-4 flex justify-end">
+      <p-button
+        label="Log in"
+        (click)="onLogin()"
+        styleClass="!border !border-black !bg-blue-500 hover:!bg-blue-700 !px-2 !py-0.5 !text-white">
+      </p-button>
+    </div>
+  </div>
+</div>

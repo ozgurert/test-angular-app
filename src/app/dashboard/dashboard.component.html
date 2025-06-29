@@ -1,0 +1,19 @@
+<div class="bg-gray-100 min-h-screen p-4 sm:p-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <div *ngFor="let user of users" class="bg-white rounded-lg shadow-lg overflow-hidden">
+
+      <img class="w-full h-48 object-cover" src="assets/images/placeholder.jpg" [alt]="'Profil Resmi ' + user.username">
+
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800">{{ user.username }}</h2>
+        <p class="mt-2 text-base text-gray-600">{{ user.email }}</p>
+
+        <button class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+          Profili Görüntüle
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

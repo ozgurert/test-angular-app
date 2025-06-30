@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "postinstall": "ng build --configuration production",
+    "start": "ng build --configuration production && node server.js",
+    "build": "ng build --configuration production",
+    "postinstall": "",
     "watch": "ng build --watch --configuration development",
     "test": "echo 'Tests are skipped for this deployment' && exit 0"
   },

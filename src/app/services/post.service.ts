@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 // DTO'ları birazdan oluşturacağız
 import { PostViewDto } from '../dto/post-view.dto';
 import { PostCreateDto } from '../dto/post-create.dto';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private apiUrl = 'http://localhost:8080/api/posts';
+  private apiUrl = `${environment.apiUrl}/api/posts`;
 
   constructor(private http: HttpClient) { }
 

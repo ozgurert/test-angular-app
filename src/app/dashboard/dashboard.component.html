@@ -1,0 +1,95 @@
+<div class="bg-gray-100 min-h-screen">
+  <!-- Header kısmı -->
+  <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-20">
+    <h1 class="text-2xl font-bold text-gray-900">Ana Sayfa</h1>
+    <p-button label="Çıkış Yap" icon="pi pi-sign-out" (click)="logout()" styleClass="p-button-danger p-button-text"></p-button>
+  </header>
+
+  <!-- İki Sütunlu Ana Yapı -->
+  <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Ana İçerik Sütunu (Ortada) -->
+    <div class="lg:col-span-2">
+
+      <!-- 1. Gönderi Paylaşma Kutusu -->
+      <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+        <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+          <textarea pInputTextarea
+                    formControlName="content"
+                    rows="3"
+                    class="w-full border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    [autoResize]="true"
+                    placeholder="Ne düşünüyorsun, {{ myProfile?.firstName }}?"></textarea>
+          <div class="flex justify-end items-center mt-3">
+            <p-button label="Paylaş" type="submit" [disabled]="postForm.invalid"></p-button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 2. Gönderi Akışı (Feed) - Artık dinamik -->
+      <div class="space-y-4">
+        <!-- *ngFor döngüsü ile gelen her gönderi için bir kart oluşturuyoruz -->
+        <div *ngFor="let post of posts" class="bg-white p-4 rounded-lg shadow-md">
+          <div class="flex items-start gap-4">
+            <a [routerLink]="['/profile', post.author.username]" class="flex-shrink-0">
+              <img class="h-12 w-12 rounded-full object-cover"
+                   [src]="'http://localhost:8080' + post.author.profileImageUrl"
+                   alt="{{post.author.username}}">
+            </a>
+            <div class="flex-grow">
+              <div class="flex items-center gap-2 flex-wrap">
+                <a [routerLink]="['/profile', post.author.username]" class="font-bold text-gray-900 hover:underline">{{ post.author.firstName }} {{ post.author.lastName }}</a>
+                <span class="text-gray-500 text-sm">{{'@'}}{{ post.author.username }} · {{ post.createdAt | date:'short' }}</span>
+              </div>
+              <!-- whitespace-pre-wrap, kullanıcının girdiği satır atlamalarını korur -->
+              <p class="mt-1 text-gray-800 whitespace-pre-wrap">{{ post.content }}</p>
+              <div class="flex justify-between items-center mt-4 text-gray-500">
+                <button class="flex items-center gap-2 hover:text-blue-500"><i class="pi pi-comment"></i> {{post.commentCount}}</button>
+                <button class="flex items-center gap-2 hover:text-green-500"><i class="pi pi-sync"></i> 0</button>
+                <button class="flex items-center gap-2 hover:text-red-500"><i class="pi pi-heart"></i> {{post.likeCount}}</button>
+                <button class="flex items-center gap-2 hover:text-blue-500"><i class="pi pi-share-alt"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Gönderi yoksa gösterilecek mesaj -->
+        <div *ngIf="!posts || posts.length === 0" class="text-center py-10 bg-white rounded-lg shadow-md">
+          <p class="text-gray-500">Henüz hiç gönderi yok. İlk gönderiyi sen paylaş!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sağ Kenar Çubuğu (Sidebar) -->
+    <!-- Bu bölüm, varsayılan olarak gizlidir ve sadece geniş ekranlarda görünür (hidden lg:block) -->
+    <div class="hidden lg:block space-y-6">
+      <!-- 1. Kendi Profil Kartın -->
+      <div *ngIf="myProfile" class="bg-white p-4 rounded-lg shadow-md">
+        <a [routerLink]="['/profile', myProfile.username]" class="flex items-center gap-4 group">
+          <img class="h-12 w-12 rounded-full object-cover" [src]="'http://localhost:8080' + myProfile.profileImageUrl" alt="Profil fotoğrafı">
+          <div>
+            <h4 class="font-bold group-hover:underline">{{ myProfile.firstName }} {{ myProfile.lastName }}</h4>
+            <p class="text-sm text-gray-500">{{'@'}}{{ myProfile.username }}</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 2. Topluluktaki Diğer Kullanıcılar -->
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Topluluktaki Diğer Kişiler</h3>
+        <div class="space-y-4">
+          <div *ngFor="let user of otherUsers" class="flex items-center justify-between">
+            <a [routerLink]="['/profile', user.username]" class="flex items-center gap-3 group">
+              <img class="h-10 w-10 rounded-full object-cover" [src]="'http://localhost:8080' + user.profileImageUrl" alt="">
+              <div>
+                <h5 class="font-semibold text-sm group-hover:underline">{{ user.firstName }} {{ user.lastName }}</h5>
+                <p class="text-xs text-gray-500">{{'@'}}{{user.username}}</p>
+              </div>
+            </a>
+            <button class="bg-gray-800 text-white text-xs font-bold py-1.5 px-3 rounded-full hover:bg-gray-700">Takip Et</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

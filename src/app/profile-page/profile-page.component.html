@@ -1,0 +1,143 @@
+<!-- Ana Konteyner -->
+<div class="bg-gray-100 min-h-screen">
+
+  <!-- Yüklenme Anı İçin Spinner -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
+  <!-- Kullanıcı Bulunamadı Durumu -->
+  <div *ngIf="userNotFound" class="p-4">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-center" role="alert">
+      <strong class="font-bold">Hata!</strong>
+      <span class="block sm:inline"> Kullanıcı bulunamadı.</span>
+    </div>
+  </div>
+
+  <!-- Profil Bilgileri Yüklendiğinde Gösterilecek Ana İçerik -->
+  <div *ngIf="user as profile" class="max-w-4xl mx-auto">
+
+    <!-- YENİ: Sayfa Başı Navigasyon Alanı -->
+    <header class="sticky top-0 bg-white/80 backdrop-blur-md z-10 p-4 border-b">
+      <div class="flex items-center gap-4">
+        <!-- Ana Sayfaya dönmek için geri butonu -->
+        <a routerLink="/dashboard" class="p-2 rounded-full hover:bg-gray-200" aria-label="Ana Sayfaya Dön">
+          <i class="pi pi-arrow-left text-xl"></i>
+        </a>
+        <div>
+          <h2 class="font-bold text-xl">{{ profile.firstName }} {{ profile.lastName }}</h2>
+          <p class="text-sm text-gray-500">Profil</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. Başlık (Header) Bölümü -->
+    <div class="bg-white shadow-md">
+      <!-- Kapak Fotoğrafı (İleride Eklenebilir) -->
+      <div class="h-48 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+
+      <!-- Profil Detayları ve Butonlar -->
+      <div class="p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-20 sm:-mt-24">
+
+          <!-- Profil Fotoğrafı -->
+          <div class="flex-shrink-0">
+            <img class="h-32 w-32 rounded-full object-cover border-4 border-white shadow-lg"
+                 [src]="profile.profileImageUrl ? 'http://localhost:8080' + profile.profileImageUrl : 'https://placehold.co/128x128/E2E8F0/4A5568?text=User'"
+                 alt="{{ profile.username }} profil fotoğrafı">
+          </div>
+
+          <!-- Şartlı Butonlar Bölümü -->
+          <div class="sm:ml-auto mt-4 sm:mt-0">
+            <a *ngIf="isOwnProfile" routerLink="/profile/edit" class="bg-white text-gray-800 border border-gray-300 font-bold py-2 px-5 rounded-full hover:bg-gray-100 transition-colors">
+              Profili Düzenle
+            </a>
+            <button *ngIf="!isOwnProfile" class="bg-blue-500 text-white font-bold py-2 px-5 rounded-full hover:bg-blue-600 transition-colors">
+              Takip Et
+            </button>
+          </div>
+        </div>
+
+        <!-- İsim, Kullanıcı Adı ve Biyografi -->
+        <div class="mt-4">
+          <h1 class="text-2xl font-bold text-gray-900">{{ profile.firstName }} {{ profile.lastName }}</h1>
+          <p class="text-sm text-gray-500">{{'@'}}{{ profile.username }}</p>
+          <p class="text-gray-700 mt-2">{{ profile.bio }}</p>
+        </div>
+
+        <!-- Konum ve İstatistikler (Gizlilik Ayarlarına Duyarlı) -->
+        <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+          <div *ngIf="profile.location" class="flex items-center">
+            <i class="pi pi-map-marker mr-1.5"></i>
+            <span>{{ profile.location }}</span>
+          </div>
+          <div *ngIf="profile.gender" class="flex items-center">
+            <i class="pi pi-user mr-1.5"></i>
+            <span>{{ profile.gender | titlecase }}</span>
+          </div>
+          <div *ngIf="profile.email" class="flex items-center">
+            <i class="pi pi-envelope mr-1.5"></i>
+            <span>{{ profile.email }}</span>
+          </div>
+          <!-- DÜZELTME: Telefon Numarası için eksik olan bölüm eklendi -->
+          <div *ngIf="profile.phoneNumber" class="flex items-center">
+            <i class="pi pi-phone mr-1.5"></i>
+            <span>{{ profile.phoneNumber }}</span>
+          </div>
+          <div *ngIf="profile.dateOfBirth" class="flex items-center">
+            <i class="pi pi-calendar mr-1.5"></i>
+            <span>Doğum Tarihi: {{ profile.dateOfBirth | date:'dd MMMM yyyy' }}</span>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+          <div class="flex items-center font-semibold">
+            <span class="mr-1">125</span><span class="text-gray-500 font-normal">Takip Edilen</span>
+          </div>
+          <div class="flex items-center font-semibold">
+            <span class="mr-1">432</span><span class="text-gray-500 font-normal">Takipçi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Gönderiler ve Diğer Sekmeler İçin Alan -->
+    <div class="mt-2">
+      <!-- Sekme Başlıkları -->
+      <div class="border-b border-gray-200 bg-white">
+        <nav class="-mb-px flex gap-x-6 px-4 sm:px-6" aria-label="Tabs">
+          <a href="#" (click)="activeTab = 'posts'; $event.preventDefault()"
+             [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'posts', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'posts'}"
+             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            Gönderiler
+          </a>
+          <a href="#" (click)="activeTab = 'likes'; $event.preventDefault()"
+             [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'likes', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'likes'}"
+             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            Beğeniler
+          </a>
+        </nav>
+      </div>
+
+      <!-- Sekme İçerikleri -->
+      <div class="py-6">
+        <!-- Gönderiler Sekmesi Aktif Olduğunda -->
+        <div *ngIf="activeTab === 'posts'">
+          <div class="text-center p-8 bg-white rounded-lg shadow">
+            <i class="pi pi-comment text-4xl text-gray-300"></i>
+            <h3 class="mt-4 text-lg font-medium text-gray-800">Henüz Gönderi Yok</h3>
+            <p class="mt-1 text-sm text-gray-500">{{ profile.firstName }}, henüz bir şey paylaşmadı.</p>
+          </div>
+        </div>
+        <!-- Beğeniler Sekmesi Aktif Olduğunda -->
+        <div *ngIf="activeTab === 'likes'">
+          <div class="text-center p-8 bg-white rounded-lg shadow">
+            <i class="pi pi-heart text-4xl text-gray-300"></i>
+            <h3 class="mt-4 text-lg font-medium text-gray-800">Henüz Beğeni Yok</h3>
+            <p class="mt-1 text-sm text-gray-500">{{ profile.firstName }}, henüz bir gönderiyi beğenmedi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

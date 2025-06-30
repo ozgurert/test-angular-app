@@ -1,0 +1,4 @@
+.p-placeholder {
+  color: #6b7280; /* Bu, Tailwind'in gray-500 renginin hex kodudur */
+  opacity: 1; /* Bazen PrimeNG placeholder'ı soluklaştırır, bunu engeller */
+}

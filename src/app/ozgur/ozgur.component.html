@@ -1,0 +1,62 @@
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4">
+
+  <div class="mb-8 text-center">
+    <h1 class="text-4xl font-bold text-gray-800">BookFace</h1>
+    <p class="text-gray-500 mt-1">Full-Stack Deneme Projesi</p>
+  </div>
+
+  <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-2xl">
+
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900">Tekrar hoş geldin!</h2>
+      <p class="mt-2 text-sm text-gray-600">Devam etmek için giriş yap</p>
+    </div>
+
+    <form [formGroup]="loginForm" class="space-y-6">
+
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-user"></i>
+        </p-inputgroup-addon>
+        <input type="text" pInputText placeholder="Kullanıcı adı" formControlName="username" class="w-full">
+      </p-inputgroup>
+
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-lock"></i>
+        </p-inputgroup-addon>
+        <input type="password" pInputText placeholder="Parola" formControlName="password" class="w-full">
+      </p-inputgroup>
+
+      <div class="flex items-center justify-between">
+        <div *ngIf="errorMessage" class="text-sm text-red-600 font-semibold">
+          {{ errorMessage }}
+        </div>
+
+        <div class="text-sm ml-auto">
+          <a (click)="onForgotPassword()" class="font-medium text-blue-600 hover:text-blue-500 cursor-pointer">
+            Şifreni mi unuttun?
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p-button
+          label="Giriş Yap"
+          (click)="onLogin()"
+          [disabled]="loginForm.invalid"
+          styleClass="w-full justify-center !font-bold !text-lg !py-3 !bg-gradient-to-r !from-blue-600 !to-indigo-600 !border-none">
+        </p-button>
+      </div>
+
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      Henüz bir hesabın yok mu?
+      <a (click)="onCreateAccount()" class="font-medium text-blue-600 hover:text-blue-500 cursor-pointer">
+        Hemen bir tane oluştur
+      </a>
+    </p>
+
+  </div>
+</div>

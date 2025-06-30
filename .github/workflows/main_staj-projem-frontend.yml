@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - staj-projem-frontend
 
 on:
@@ -16,9 +19,9 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x' # Daha stabil bir LTS versiyonuna geçiyoruz
+          node-version: '20.x'
 
-      - name: npm install, build
+      - name: npm install and build
         run: |
           npm install
           npm run build --if-present
@@ -43,6 +46,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          # DÜZELTME: Tenant ID ve Subscription ID doğru alanlara yerleştirildi.
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_85CFE3C6D8F546F28812125698516420 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_21CDE7E8FE4B49DB840A0A007EA42D26 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D6812244DF174C07869BD7AF25BB3448 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp

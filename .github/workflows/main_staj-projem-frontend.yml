@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - staj-projem-frontend
+name: Deploy Source Code to Azure Web App
 
 on:
   push:
@@ -7,27 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-  
     permissions:
       id-token: write 
-
     steps:
-      - name: Checkout repository
+      - name: 'Checkout Github Action'
         uses: actions/checkout@v4
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build --if-present
-      
-      - name: Login to Azure
+      - name: 'Login to Azure'
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_85CFE3C6D8F546F28812125698516420 }}
@@ -35,9 +23,7 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D6812244DF174C07869BD7AF25BB3448 }}
 
       - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'staj-projem-frontend'
-          slot-name: 'Production'
           package: .

@@ -1,4 +1,6 @@
-name: Deploy Source Code to Azure Web App
+# Angular - Frontend Workflow (Yeniden Düzenlendi)
+
+name: Build and deploy Angular app to Azure Web App - staj-projem-frontend
 
 on:
   push:
@@ -7,15 +9,43 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write 
+
     steps:
-      - name: 'Checkout Github Action'
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 'Login to Azure'
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-app
+          # Sadece build edilmiş dosyaları paketliyoruz.
+          path: dist/untitled2/browser/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-app
+
+      - name: Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_85CFE3C6D8F546F28812125698516420 }}
@@ -23,7 +53,10 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D6812244DF174C07869BD7AF25BB3448 }}
 
       - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'staj-projem-frontend'
+          slot-name: 'Production'
+          # İndirilen artifact'ı (sadece build edilmiş dosyaları içerir) deploy ediyoruz.
           package: .

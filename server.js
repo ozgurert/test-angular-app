@@ -2,14 +2,14 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Angular projesinin build sonrası çıktılarının bulunduğu klasörü belirtiyoruz.
-const appName = 'untitled2';
-app.use(express.static(__dirname + `/dist/${appName}`));
+const port = process.env.PORT || 8080;
 
-// Gelen tüm istekler için ana HTML dosyasını gönder (Angular routing'in çalışması için)
+app.use(express.static(__dirname + '/dist/untitled2/browser'));
+
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + `/dist/${appName}/index.html`));
+  res.sendFile(path.join(__dirname + '/dist/untitled2/browser/index.html'));
 });
 
-// Azure'un bize verdiği portu dinle
-app.listen(process.env.PORT || 8080);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server listening on port ${port}`);
+});
